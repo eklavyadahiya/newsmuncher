@@ -1,0 +1,102 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+  font-family: sans-serif;
+  background-color: #edf2f7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+.card-container, .card-container-vertical {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.card-wrapper, .card-wrapper-vertical {
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  display:inline-block;
+  vertical-align: top;
+}
+
+
+/* On large screens */
+@media (min-width: 1024px) {
+  .card-wrapper, .card-wrapper-vertical {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.card-container {
+  scroll-snap-type: x mandatory; 
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card-container-vertical {
+  scroll-snap-type: y mandatory; 
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; 
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* ensures the navbar is above other content */
+}
+
+
+.main-content {
+  padding-top: 60px;
+}
+
+.horizontal-styles {
+  margin-left:10px;
+  margin-right:10px;
+  width:22em;
+}
+
+.highlight-styles::before {
+  content: "This is the current story";
+}
+
+
+/* Add this to your CSS file */
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Adjust the space between the tags */
+  margin-top: 10px; /* Space from the content above */
+}
+
+.tag-link {
+  padding: 5px 10px; /* Adjust padding to your preference */
+  background-color: #e0e0e0; /* Light grey background, change as needed */
+  color: #333; /* Dark text color, change as needed */
+  border-radius: 15px; /* Rounded corners for the button look */
+  text-decoration: none; /* Remove underline from links */
+  font-size: 0.75rem; /* Smaller font size for the tag buttons */
+  transition: background-color 0.3s; /* Smooth background color transition on hover */
+}
+
+.tag-link:hover {
+  background-color: #bdbdbd; /* Darker grey on hover, change as needed */
+}

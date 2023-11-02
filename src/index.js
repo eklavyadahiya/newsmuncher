@@ -1,10 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import Munch from './Munch';
+import './index.css';
+import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+
+import { createRoot } from 'react-dom/client';
+const container = document.getElementById('root');
+const root = createRoot(container); 
 root.render(
-  <React.StrictMode>
-    <Munch />
-  </React.StrictMode>
+   <App />
 );
