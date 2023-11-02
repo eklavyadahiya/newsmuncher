@@ -1,6 +1,6 @@
 // src/App.js
 import React, { Suspense, lazy } from 'react';
-import { Navigate, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navigate, HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar'
 const HomePage = lazy(() => import('./pages/HomePage'));
 const TrendingPage = lazy(() => import('./pages/TrendingPage'));
