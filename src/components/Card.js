@@ -1,11 +1,10 @@
 // src/components/Card.js
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Card({ guid, tags, date, publisher, parent_url, title, image, summary }) {
+function Card({ guid, tags, date, publisher, parent_url, title, image, summary, country}) {
   
-  const articleLink = `/IN/article/${guid}`;
+  const articleLink = `/${country}/article/${guid}`;
   const displayedTags = tags.slice(0, 6);
   const publishDate = new Date(date);
   const options = {
@@ -19,7 +18,8 @@ function Card({ guid, tags, date, publisher, parent_url, title, image, summary }
   const humanReadableDate = publishDate.toLocaleDateString('en-GB', options);
 
   return (
-    <div className="h-screen w-full overflow-y-auto max-w-sm rounded overflow-hidden shadow-lg my-4 mx-auto">
+    <div className="card-box">
+    <div className="w-full max-w-2xl rounded overflow-hidden shadow-lg my-4 mx-auto">
       <img className="w-full h-48 object-cover" src={image} alt={title} />
       <div className="px-6 py-4">
       <p className="font-bold text-m mb-2 text-red-700">{humanReadableDate}</p>
@@ -44,6 +44,7 @@ function Card({ guid, tags, date, publisher, parent_url, title, image, summary }
           </Link>
         ))}
       </div>
+    </div>
     </div>
   );
 }

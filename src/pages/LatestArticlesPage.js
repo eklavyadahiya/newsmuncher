@@ -1,4 +1,4 @@
-// src/pages/TrendingPage.js
+// src/pages/LatestArticlesPages.js
 import { React, useRef }  from 'react';
 import { useParams } from 'react-router-dom';
 import useArticleFetcher from '../hooks/useArticleFetcher';
@@ -6,9 +6,9 @@ import Card from '../components/Card';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
 
-function TrendingPage() {
+function LatestArticles() {
   const { country } = useParams();
-  const apiEndpoint = `https://api.newsmuncher.com/api/trending/${country}`;
+  const apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}`;
   const { articles, isFetching, loadMoreData } = useArticleFetcher(apiEndpoint);
   const scrollRef = useRef(null);
   
@@ -18,7 +18,7 @@ function TrendingPage() {
   return (
     <div className="w-full">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-blue-700">Trending Articles</h2>
+        <h2 className="text-2xl font-bold text-blue-700">Latest Articles</h2>
         </div>
       <div ref={scrollRef} className="card-container-vertical">
         {articles.map(article => (
@@ -42,4 +42,4 @@ function TrendingPage() {
   );
 }
 
-export default TrendingPage;
+export default LatestArticles;
