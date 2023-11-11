@@ -1,55 +1,37 @@
-// src/App.js
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
-import { Outlet, Navigate, RouterProvider, createBrowserRouter as Router } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar'
-import TrendingPage from './pages/TrendingPage'
 import ErrorPage from './pages/ErrorPage'
-import LatestArticlesPage from './pages/LatestArticlesPage'
+import ListArticlesPage from './pages/ListArticlesPage'
 import ArticlePage from './pages/ArticlePage'
 
 function App() {
-  function Layout() {
-    return (
-        <>
-        <Provider store={store}>
-          <Navbar />
-          <Outlet />
-          </Provider>
-        </>
-    );
-  }
-
-const router = Router([
-      {
-        element: <Layout/>,
-        errorElement: <ErrorPage />,
-        children:  [
-          {
-            path: "/",
-            element: <Navigate to="/IN" replace />,
-          },
-          {
-            path: "/:country",
-            element: <TrendingPage />,
-          },
-          {
-            path: "/:country/latest",
-            element: <LatestArticlesPage />,
-          },
-          {
-            path: "/:country/article/:article",
-            element: <ArticlePage />,
-          },
-        ]
-      }
-    ]
-  );
-  
   return (
     <React.StrictMode>
-    <RouterProvider router={router} />
+      <Provider store={store}>
+        <HashRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Navigate to="/IN" replace />} />
+            <Route 
+              path="/:country" 
+              element={<ListArticlesPage key="trending" pageType="trending" />} 
+            />
+            <Route 
+              path="/:country/latest" 
+              element={<ListArticlesPage key="latest" pageType="latest" />} 
+            />
+            <Route 
+              path="/:country/tag/:tag" 
+              element={<ListArticlesPage key="tag" pageType="tag" />} 
+            />
+            <Route path="/:country/article/:article" element={<ArticlePage />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+      </HashRouter>
+      </Provider>
     </React.StrictMode>
   );
 }

@@ -3,26 +3,45 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendArticles } from '../reducers/articlesSlice';
 import { setLastArticleId } from '../reducers/lastArticleIdSlice';
-
 import useArticleFetcher from '../hooks/useArticleFetcher';
 import Card from '../components/Card';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 
-function TrendingPage() {
-  const { country } = useParams();
-  const apiEndpoint = `https://api.newsmuncher.com/api/trending/${country}`;
+function ListArticlesPage({ pageType }) {
+  const { country, tag } = useParams();
+  let apiEndpoint;
+
+  // Determine the API endpoint based on pageType
+  if (pageType === 'trending') {
+    apiEndpoint = `https://api.newsmuncher.com/api/trending/${country}`;
+  } else if (pageType === 'latest') {
+    apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}`;
+  } else if (pageType === 'tag') {
+    apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}/tag/${tag}`;
+  }
+
   const { articles, loadMoreData } = useArticleFetcher(apiEndpoint);
   const dispatch = useDispatch();
-  const storedArticles = useSelector((state) => state.articles.articles);
-  const lastArticleId = useSelector(state => state.lastArticleId.lastArticleId); // Moved here
+  const lastArticleId = useSelector(state => state.lastArticleId.lastArticleId);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   useInfiniteScroll(loadMoreData);
 
+  // Selector for getting the relevant articles based on pageType
+  const storedArticles = useSelector(state => {
+    if (pageType === 'trending') {
+      return state.articles.trending;
+    } else if (pageType === 'latest') {
+      return state.articles.latest;
+    } else if (pageType === 'tag') {
+      return state.articles.tags[tag] || [];
+    }
+  });
+
   useEffect(() => {
     if (articles.length > 0) {
-      dispatch(appendArticles(articles));
+      dispatch(appendArticles({ pageType, articles }));
     }
-  }, [articles, dispatch]);
+  }, [articles, dispatch, pageType]);
 
   useEffect(() => {
     const lastArticleElement = document.getElementById(lastArticleId);
@@ -30,7 +49,7 @@ function TrendingPage() {
       lastArticleElement.scrollIntoView();
       setIsInitialLoad(false);
     }
-  }, [storedArticles, lastArticleId, isInitialLoad]);
+  }, [lastArticleId, isInitialLoad]);
 
   return (
     <div className="card-container-vertical">
@@ -58,4 +77,4 @@ function TrendingPage() {
   );
 }
 
-export default TrendingPage;
+export default ListArticlesPage;
