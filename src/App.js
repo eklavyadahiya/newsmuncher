@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import ErrorPage from './pages/ErrorPage'
 import ListArticlesPage from './pages/ListArticlesPage'
 import ArticlePage from './pages/ArticlePage'
+import BackToTopButton from './components/BackToTopButton';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
           </Routes>
       </HashRouter>
+      <BackToTopButton />
       </Provider>
     </React.StrictMode>
   );

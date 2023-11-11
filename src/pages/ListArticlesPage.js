@@ -7,17 +7,21 @@ import useArticleFetcher from '../hooks/useArticleFetcher';
 import Card from '../components/Card';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 
+
 function ListArticlesPage({ pageType }) {
   const { country, tag } = useParams();
   let apiEndpoint;
-
-  // Determine the API endpoint based on pageType
+  let pageTitle;
+  
   if (pageType === 'trending') {
     apiEndpoint = `https://api.newsmuncher.com/api/trending/${country}`;
+    pageTitle = "Trending Articles"
   } else if (pageType === 'latest') {
     apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}`;
+    pageTitle = "Latest Articles"
   } else if (pageType === 'tag') {
     apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}/tag/${tag}`;
+    pageTitle = "Articles for tag " + {tag}
   }
 
   const { articles, loadMoreData } = useArticleFetcher(apiEndpoint);
@@ -52,7 +56,8 @@ function ListArticlesPage({ pageType }) {
   }, [lastArticleId, isInitialLoad]);
 
   return (
-    <div className="card-container-vertical">
+    <div className="card-container-vertical" > 
+    <div className="text-center"><h2 className="text-2xl mb-4 font-bold text-gray-800 p-4">{pageTitle ? (pageTitle) : ''} </h2></div>
       {storedArticles.map(article => (
         <div 
           key={article.guid} 

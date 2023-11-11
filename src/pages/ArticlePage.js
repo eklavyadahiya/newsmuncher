@@ -10,6 +10,12 @@ function ArticlePage() {
   const [relatedArticles, setRelatedArticles] = useState([]);
   const { article: articleGuid } = useParams();
 
+  useEffect(() => {
+    const rootElement = document.getElementById('root');
+    rootElement.scrollTo(0, 0);
+  }, []);
+
+
   const getEndpointURL = () => {
     return `https://api.newsmuncher.com/api/article/${articleGuid}`;
   };
@@ -24,59 +30,42 @@ function ArticlePage() {
       const uniqueGUIDs = new Set();
   
       // Filter the related array, adding only unique GUIDs to the set and array
-      const filteredRelated = response.data.related
-      ?.filter(ra => {
-        const isUnique = !uniqueGUIDs.has(ra.guid);
-        uniqueGUIDs.add(ra.guid);
-        return isUnique;
-      }) || [];
+      let filteredRelated = response.data.related
+        ?.filter(ra => {
+          const isUnique = !uniqueGUIDs.has(ra.guid);
+          uniqueGUIDs.add(ra.guid);
+          return isUnique;
+        }) || [];
+  
+      // Sort the articles by publish_date in descending order
+      filteredRelated = filteredRelated.sort((a, b) => {
+        const dateA = new Date(a.publish_date);
+        const dateB = new Date(b.publish_date);
+        return dateB - dateA; // For descending order
+      });
   
       setRelatedArticles(filteredRelated);
     } catch (error) {
       console.error("Error fetching article:", error);
     }
   };
+  
+  
   useEffect(() => {
     fetchArticle();
   }, [articleGuid]);
-  // Handle horizontal scrolling
-  useEffect(() => {
-    const container = document.querySelector('.card-container');
-
-    const handleScroll = () => {
-      // Check if we're near the right edge of the container
-      if (container.scrollWidth - (container.scrollLeft + container.clientWidth) < 100) {
-      }
-    };
-
-    container.addEventListener('scroll', handleScroll);
-
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [relatedArticles]); // Re-run the effect when relatedArticles changes
-
-  const calculateDaysBetween = (date1, date2) => {
-    // One day in milliseconds
-    const oneDay = 24 * 60 * 60 * 1000;
-    // Convert both dates to milliseconds
-    const date1Ms = new Date(date1).getTime();
-    const date2Ms = new Date(date2).getTime();
-    // Calculate the difference in milliseconds
-    const differenceMs = Math.abs(date1Ms - date2Ms);
-    // Convert back to days and return
-    return Math.round(differenceMs / oneDay);
-  };
-
+  
   
   return (
     <div className="bg-gray-100 min-h-screen">
-      <header className="bg-white shadow text-center">
-        <h2 className="text-2xl mb-4 font-bold text-gray-800 p-4">Article Details</h2>
+      <header className="text-center">
+        <h2 className="text-2xl font-bold text-blue-800 pt-4">{article ? (article.title) : ''}</h2>
       </header>
-      <main className="p-4">
-        <section className="mb-8 p-4 bg-white rounded-lg shadow-lg">
+      <main className="">
+        <section className="">
           {article ? (
             <Card 
-              title={article.title} 
+              title=""
               image={article.top_image} 
               summary={article.clean_summary}
               guid={article.guid}
@@ -89,8 +78,8 @@ function ArticlePage() {
             <p>Loading...</p>
           )}
         </section>
-        <section className="mb-8">
-        <header className="bg-white shadow text-center">
+        <section className="mb-8 bg-white shadow text-center">
+        <header className="">
         <h2 className="text-2xl mb-4 font-bold text-gray-800 p-4">Timeline</h2>
           </header>
           <div className="h-screen w-full overflow-hidden card-container hide-scrollbar overflow-x-scroll flex space-x-12">
