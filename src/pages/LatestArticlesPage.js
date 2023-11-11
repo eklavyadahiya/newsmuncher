@@ -8,14 +8,9 @@ import useArticleFetcher from '../hooks/useArticleFetcher';
 import Card from '../components/Card';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 
-function LatestArticles({ isTrending }) {
+function LatestArticles() {
   const { country } = useParams();
-  // const apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}`;
-
-  const apiEndpoint = isTrending 
-  ? `https://api.newsmuncher.com/api/trending/${country}`
-  : `https://api.newsmuncher.com/api/articles/${country}`;
-
+  const apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}`;
   const { articles, loadMoreData } = useArticleFetcher(apiEndpoint);
   const dispatch = useDispatch();
   const storedArticles = useSelector((state) => state.articles.articles);

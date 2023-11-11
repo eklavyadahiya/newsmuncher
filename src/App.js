@@ -21,31 +21,31 @@ function App() {
     );
   }
 
-  const router = Router([
-    {
-      element: <Layout/>,
-      errorElement: <ErrorPage />,
-      children: [
-        {
-          path: "/",
-          element: <Navigate to="/IN" replace />,
-        },
-        {
-          path: "/:country",
-          element: <LatestArticlesPage isTrending={false} />,
-        },
-        {
-          path: "/:country/latest",
-          element: <LatestArticlesPage isTrending={true} />,
-        },
-        {
-          path: "/:country/article/:article",
-          element: <ArticlePage />,
-        },
-      ]
-    }
-  ]);
-
+const router = Router([
+      {
+        element: <Layout/>,
+        errorElement: <ErrorPage />,
+        children:  [
+          {
+            path: "/",
+            element: <Navigate to="/IN" replace />,
+          },
+          {
+            path: "/:country",
+            element: <TrendingPage />,
+          },
+          {
+            path: "/:country/latest",
+            element: <LatestArticlesPage />,
+          },
+          {
+            path: "/:country/article/:article",
+            element: <ArticlePage />,
+          },
+        ]
+      }
+    ]
+  );
   
   return (
     <React.StrictMode>
