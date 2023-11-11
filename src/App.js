@@ -1,43 +1,56 @@
 // src/App.js
-import React, { Suspense, lazy } from 'react';
-import { Navigate, HashRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
+import { Outlet, Navigate, RouterProvider, createBrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar'
-const HomePage = lazy(() => import('./pages/HomePage'));
-const TrendingPage = lazy(() => import('./pages/TrendingPage'));
-const LatestArticlesPage = lazy(() => import('./pages/LatestArticlesPage'));
-const ArticlePage = lazy(() => import('./pages/ArticlePage'));
+import TrendingPage from './pages/TrendingPage'
+import ErrorPage from './pages/ErrorPage'
+import LatestArticlesPage from './pages/LatestArticlesPage'
+import ArticlePage from './pages/ArticlePage'
 
 function App() {
+  function Layout() {
+    return (
+        <>
+        <Provider store={store}>
+          <Navbar />
+          <Outlet />
+          </Provider>
+        </>
+    );
+  }
+
+  const router = Router([
+    {
+      element: <Layout/>,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "/",
+          element: <Navigate to="/IN" replace />,
+        },
+        {
+          path: "/:country",
+          element: <LatestArticlesPage isTrending={false} />,
+        },
+        {
+          path: "/:country/latest",
+          element: <LatestArticlesPage isTrending={true} />,
+        },
+        {
+          path: "/:country/article/:article",
+          element: <ArticlePage />,
+        },
+      ]
+    }
+  ]);
+
+  
   return (
-    <Router>
-      <Navbar/>
-      <Suspense fallback={<div>Loading...</div>}>
-      <main className="main-content">
-        <Routes>
-          
-          <Route path="/" element={<Navigate replace to="/IN" />} />
-          <Route
-            path="/:country/"
-            element={<TrendingPage />}
-          />
-          <Route
-            path="/:country/latest/"
-            element={<LatestArticlesPage />}
-          />
-
-          <Route
-            path="/:country/tag/:tag/"
-            element={<TrendingPage />}
-          />
-
-          <Route
-            path="/:country/article/:article"
-            element={<ArticlePage />}
-          />
-        </Routes>
-        </main>
-      </Suspense>
-    </Router>
+    <React.StrictMode>
+    <RouterProvider router={router} />
+    </React.StrictMode>
   );
 }
 

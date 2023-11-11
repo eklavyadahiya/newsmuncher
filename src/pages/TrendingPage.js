@@ -1,26 +1,25 @@
 // src/pages/TrendingPage.js
-import { React, useRef }  from 'react';
+import { React }  from 'react';
 import { useParams } from 'react-router-dom';
 import useArticleFetcher from '../hooks/useArticleFetcher';
 import Card from '../components/Card';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
-import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
 
 function TrendingPage() {
   const { country } = useParams();
   const apiEndpoint = `https://api.newsmuncher.com/api/trending/${country}`;
+
   const { articles, isFetching, loadMoreData } = useArticleFetcher(apiEndpoint);
-  const scrollRef = useRef(null);
   
-  useKeyboardNavigation(scrollRef);
-  useInfiniteScroll(scrollRef, loadMoreData);
+  useInfiniteScroll(loadMoreData);
 
   return (
     <div className="w-full">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-blue-700">Trending Articles</h2>
+        <h2 className="page-heading text-2xl font-bold text-blue-700">Trending</h2>
         </div>
-      <div ref={scrollRef} className="card-container-vertical">
+      
+      <div className="card-container-vertical">
         {articles.map(article => (
           <div key={article.guid} className="card-wrapper-vertical">
             <Card 

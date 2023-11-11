@@ -1,23 +1,24 @@
 import { useEffect } from 'react';
 
-const useInfiniteScroll = (scrollRef, loadMoreData) => {
+const useInfiniteScroll = (loadMoreData) => {
   useEffect(() => {
+    const container = document.getElementById('root');
+
     const handleScroll = () => {
-      if (scrollRef.current) {
-        const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
+      if (container) {
+        const { scrollTop, clientHeight, scrollHeight } = container;
         if (scrollTop + clientHeight >= scrollHeight - 700) {
           loadMoreData();
         }
       }
     };
     
-    const container = scrollRef.current;
     container && container.addEventListener('scroll', handleScroll);
 
     return () => {
       container && container.removeEventListener('scroll', handleScroll);
     };
-  }, [scrollRef, loadMoreData]);
+  }, [loadMoreData]);
 };
 
 export default useInfiniteScroll;

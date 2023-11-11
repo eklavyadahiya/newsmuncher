@@ -19,7 +19,7 @@ function Card({ guid, tags, date, publisher, parent_url, title, image, summary, 
 
   return (
     <div className="card-box">
-    <div className="w-full max-w-2xl rounded overflow-hidden shadow-lg my-4 mx-auto">
+    <div className="w-full max-w-2xl rounded overflow-hidden shadow-lg my-4 mx-auto card-body">
       <img className="w-full h-48 object-cover" src={image} alt={title} />
       <div className="px-6 py-4">
       <p className="font-bold text-m mb-2 text-red-700">{humanReadableDate}</p>

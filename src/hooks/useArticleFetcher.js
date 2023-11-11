@@ -44,7 +44,7 @@ function useArticleFetcher(apiEndpoint) {
     fetchArticles();
   }, [apiEndpoint]);
 
-  return { articles, isFetching, loadMoreData, setIsFetching, setArticles };
+  return { articles, isFetching, loadMoreData, setIsFetching };
 }
 
 export default useArticleFetcher;
