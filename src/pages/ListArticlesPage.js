@@ -18,7 +18,7 @@ function ListArticlesPage({ pageType }) {
     pageTitle = "Trending Articles"
   } else if (pageType === 'latest') {
     apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}`;
-    pageTitle = "Latest Articles"
+    pageTitle = "What's happening in India"
   } else if (pageType === 'tag') {
     apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}/tag/${tag}`;
     pageTitle = "Articles for tag " + {tag}
@@ -57,7 +57,7 @@ function ListArticlesPage({ pageType }) {
 
   return (
     <div className="card-container-vertical" > 
-    <div className="text-center"><h2 className="text-2xl mb-4 font-bold text-gray-800 p-4">{pageTitle ? (pageTitle) : ''} </h2></div>
+    <div className="text-center"><h2 className="text-2xl font-bold text-gray-800 pt-4">{pageTitle ? (pageTitle) : ''} </h2></div>
       {storedArticles.map(article => (
         <div 
           key={article.guid} 
@@ -74,7 +74,7 @@ function ListArticlesPage({ pageType }) {
             date={article.publish_date}
             publisher={article.site}
             parent_url={article.url}
-            tags={article.tags}
+            tags={[]} //{article.tags}
           />
         </div>
       ))}

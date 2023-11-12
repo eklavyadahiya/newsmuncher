@@ -72,7 +72,7 @@ function ArticlePage() {
               date={article.publish_date}
               publisher={article.site}
               parent_url={article.url}
-              tags={article.tags}
+              tags={[]} //{article.tags}
             />
           ) : (
             <p>Loading...</p>
@@ -96,7 +96,7 @@ function ArticlePage() {
                   horizontal={true}
                   publisher={relatedArticle.site}
                   parent_url={relatedArticle.url}
-                  tags={relatedArticle.tags}
+                  tags={[]} //{relatedArticle.tags}
                 />
               </div>
             ))}

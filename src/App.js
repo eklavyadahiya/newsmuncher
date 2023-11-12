@@ -15,7 +15,7 @@ function App() {
         <HashRouter>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Navigate to="/IN" replace />} />
+            <Route path="/" element={<Navigate to="/IN/latest" replace />} />
             <Route 
               path="/:country" 
               element={<ListArticlesPage key="trending" pageType="trending" />} 

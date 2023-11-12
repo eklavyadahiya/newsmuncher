@@ -43,9 +43,12 @@ function TimelineCard({ title, tags, image, summary, date, highlight, guid, publ
       </div>
       <div className="tag-container m-5">
         {displayedTags.map((tag, index) => (
-          <Link key={index} to={`/IN/tag/${tag}/`} className="tag-link">
-            {tag.replace(/-/g, ' ')}
-          </Link>
+          <div key={index} className="tag-link">
+             {tag.replace(/-/g, ' ')}
+           </div>
+          // <Link key={index} to={`/IN/tag/${tag}/`} className="tag-link">
+          //   {tag.replace(/-/g, ' ')}
+          // </Link>
         ))}
       </div>
     </div>
