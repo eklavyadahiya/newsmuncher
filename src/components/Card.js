@@ -12,14 +12,13 @@ import {
   LinkedinIcon
 } from 'react-share';
 
-function Card({ guid, tags, date, publisher, parent_url, title, image, summary, country}) {
+function Card({ setNavigationSource, guid, tags, date, publisher, parent_url, title, image, summary, country}) {
   
   const shareUrl = `https://newsmuncher.com/#/${country}/article/${guid}`;
-
   // const publisherFormatted = publisher.split(',').join(' - ');
   const publisherFormatted = publisher.replace(/([a-z])([A-Z])/g, '$1 $2');
   const articleLink = `/${country}/article/${guid}`;
-  const displayedTags = tags.slice(0, 6);
+  const displayedTags = tags.slice(0, 20);
   const publishDate = new Date(date);
   const options = {
     year: 'numeric',
@@ -67,21 +66,20 @@ function Card({ guid, tags, date, publisher, parent_url, title, image, summary, 
     <LinkedinIcon size={32} round />
   </LinkedinShareButton>
 
-
 </div>
-
-
       </div>
-
-
         <div className="tag-container m-5">
         {displayedTags.map((tag, index) => (
-          <div key={index} className="tag-link">
-             {tag.replace(/-/g, ' ')}
-           </div>
-          // <Link key={index} to={`/IN/tag/${tag}/`} className="tag-link">
-          //   {tag.replace(/-/g, ' ')}
-          // </Link>
+          <Link reloadDocument 
+          onClick={() => {
+            setNavigationSource('tagClick');
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          }}
+          key={index} to={`/IN/tag/${tag}/`} className="tag-link">
+            {tag.replace(/-/g, ' ')}
+          </Link>
         ))}
       </div>
     </div>

@@ -26,7 +26,7 @@ function App() {
             />
             <Route 
               path="/:country/tag/:tag" 
-              element={<ListArticlesPage key="tag" pageType="tag" />} 
+              element={<ListArticlesPage key="{tag}" pageType="tag" />} 
             />
             <Route path="/:country/article/:article" element={<ArticlePage />} />
             <Route path="*" element={<ErrorPage />} />

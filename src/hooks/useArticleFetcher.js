@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 
-function useArticleFetcher(apiEndpoint) {
+function useArticleFetcher(apiEndpoint, pageType, tag='') {
   const [articles, setArticles] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -14,7 +14,15 @@ function useArticleFetcher(apiEndpoint) {
     setIsFetching(true);
 
     try {
-      const response = await axios.get(url);
+      let response;
+      if (pageType === 'tag') {
+        response = await axios.post(url, {
+          tag_slugs: [tag],
+          filter_condition: "AND"})
+      } else {
+        response = await axios.get(url);
+      };
+      
       setNextUrl(response.data.next);
 
       setArticles(prevArticles => {
@@ -32,6 +40,7 @@ function useArticleFetcher(apiEndpoint) {
       setIsFetching(false);
       fetchingLock.current = false;
     }
+
   };
 
   const loadMoreData = () => {
@@ -41,6 +50,7 @@ function useArticleFetcher(apiEndpoint) {
   };
 
   useEffect(() => {
+    setArticles([]);
     fetchArticles();
   }, [apiEndpoint]);
 

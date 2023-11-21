@@ -21,6 +21,7 @@ body {
 
 .card-container, .card-container-vertical {
   width: 100vw;
+  
 }
 
 .card-wrapper, .card-wrapper-vertical {
@@ -137,4 +138,19 @@ body {
 
 .copy-btn{
   font-size: 10px;
+}
+
+
+
+@media (min-width: 768px) {
+  .card-container-vertical {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+    grid-gap: 20px; 
+    padding: 20px;
+  }
+
+  .card-wrapper-vertical {
+    width: 100%; /* Reset width for grid items */
+  }
 }

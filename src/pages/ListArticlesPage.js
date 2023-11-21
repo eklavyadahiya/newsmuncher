@@ -20,32 +20,41 @@ function ListArticlesPage({ pageType }) {
     apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}`;
     pageTitle = "What's happening in India"
   } else if (pageType === 'tag') {
-    apiEndpoint = `https://api.newsmuncher.com/api/articles/${country}/tag/${tag}`;
-    pageTitle = "Articles for tag " + {tag}
+    apiEndpoint = `https://api.newsmuncher.com/api/tags/${country}/`;
+    pageTitle = `Articles for tag ${tag}`;
   }
 
-  const { articles, loadMoreData } = useArticleFetcher(apiEndpoint);
+  const { articles, loadMoreData } = useArticleFetcher(apiEndpoint, pageType, tag);
+  const [navigationSource, setNavigationSource] = useState(null);
   const dispatch = useDispatch();
   const lastArticleId = useSelector(state => state.lastArticleId.lastArticleId);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   useInfiniteScroll(loadMoreData);
+  
+  const trendingArticles = useSelector(state => state.articles.trending);
+  const latestArticles = useSelector(state => state.articles.latest);
+  const tagArticles = useSelector(state => state.articles.tags[tag]);
 
-  // Selector for getting the relevant articles based on pageType
-  const storedArticles = useSelector(state => {
-    if (pageType === 'trending') {
-      return state.articles.trending;
-    } else if (pageType === 'latest') {
-      return state.articles.latest;
-    } else if (pageType === 'tag') {
-      return state.articles.tags[tag] || [];
-    }
-  });
+    let storedArticles;
+    switch (pageType) {
+      case 'trending':
+        storedArticles = trendingArticles;
+        break;
+      case 'latest':
+        storedArticles = latestArticles;
+        break;
+      case 'tag':
+        storedArticles = tagArticles || [];
+        break;
+}
 
   useEffect(() => {
-    if (articles.length > 0) {
-      dispatch(appendArticles({ pageType, articles }));
-    }
-  }, [articles, dispatch, pageType]);
+  if (articles.length > 0 && pageType === 'tag') {
+    dispatch(appendArticles({ pageType, articles, tag }));
+  } else if (articles.length > 0) {
+    dispatch(appendArticles({ pageType, articles }));
+  }
+}, [articles, dispatch, pageType, tag]);
 
   useEffect(() => {
     const lastArticleElement = document.getElementById(lastArticleId);
@@ -54,10 +63,22 @@ function ListArticlesPage({ pageType }) {
       setIsInitialLoad(false);
     }
   }, [lastArticleId, isInitialLoad]);
+  
+  useEffect(() => {
+    if (pageType === 'tag' && navigationSource == 'tagClick') {
+      const root = document.getElementById('main');
+      root.style.display = 'none';
 
+      const nav = document.getElementById('nav');
+      setTimeout(() => {
+        nav.scrollIntoView();root.style.display = '';}, 1000);
+        
+    }
+  }, [pageType, navigationSource]);
+ 
   return (
-    <div className="card-container-vertical" > 
-    <div className="text-center"><h2 className="text-2xl font-bold text-gray-800 pt-4">{pageTitle ? (pageTitle) : ''} </h2></div>
+    <div id="main" className="card-container-vertical" > 
+    <div className="text-center"><h2 className="text-2xl font-bold text-gray-800 pt-4 pageTitle">{pageTitle ? (pageTitle) : ''} </h2></div>
       {storedArticles.map(article => (
         <div 
           key={article.guid} 
@@ -66,6 +87,7 @@ function ListArticlesPage({ pageType }) {
           onClick={() => dispatch(setLastArticleId(article.guid))}
         >
           <Card 
+            setNavigationSource={setNavigationSource}
             country={country}
             title={article.title} 
             image={article.top_image} 
@@ -74,7 +96,7 @@ function ListArticlesPage({ pageType }) {
             date={article.publish_date}
             publisher={article.site}
             parent_url={article.url}
-            tags={[]} //{article.tags}
+            tags={article.tags}
           />
         </div>
       ))}
