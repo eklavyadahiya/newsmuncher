@@ -12,7 +12,12 @@ function Navbar() {
         </li> */}
         <li>
           <Link to="/IN/latest" className="text-white hover:underline header-btn">
-            Home
+            Latest
+          </Link>
+        </li>
+        <li>
+          <Link to="/IN/search" className="text-white hover:underline header-btn">
+            Search
           </Link>
         </li>
         <li>

@@ -7,6 +7,7 @@ import ErrorPage from './pages/ErrorPage'
 import ListArticlesPage from './pages/ListArticlesPage'
 import ArticlePage from './pages/ArticlePage'
 import BackToTopButton from './components/BackToTopButton';
+import SearchArticlesPage from './pages/SearchArticlesPage'
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
             <Route 
               path="/:country" 
               element={<ListArticlesPage key="trending" pageType="trending" />} 
+            />
+            <Route 
+              path="/:country/search" 
+              element={<SearchArticlesPage key="search" pageType="search" />} 
             />
             <Route 
               path="/:country/latest" 
